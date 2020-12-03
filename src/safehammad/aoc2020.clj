@@ -8,24 +8,22 @@
   (map #(Integer/parseInt %)
      (str/split-lines
        (slurp (io/resource "input.txt")))))
-
-(defn sums
-  "Seq of sums of first and rest given a seq of numbers."
+ 
+(defn triplets
+  "Seq of triplets: (sum, first, xs1), (sum first xs2), etc."
   [[x & xs]]
   (map #(vector (+ x %) x %) xs))
 
-(defn filter-first
-  "Return a filter function where the first number is the given number."
-  [number]
-  (fn [x] (= number (first x))))
-
-(defn run
+(defn groups
+  "Given (a b c d ...) return (a b c d ...), (b c d ...), up to final pair."
   [numbers]
-  (loop [acc [] numbers numbers]
-    (if (< (count numbers) 2)
-      acc
-      (recur (concat acc (sums numbers)) (rest numbers)))))
+  (take-while #(> (count %) 1) (iterate rest numbers)))
+
+(defn answer
+  "Return the final answer from the first triplet."
+  [[[sum x y] & _]]
+  (* x y))
 
 (defn -main
   [& args]
-  (apply * (rest (first (filter (filter-first 2020) (run input))))))
+  (answer (filter #(= (first %) 2020) (mapcat triplets (groups input)))))
