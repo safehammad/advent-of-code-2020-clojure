@@ -17,14 +17,24 @@
      (str/replace letter #":" "")
      password]))
 
-(defn valid
+(defn valid-part1
   "Given (limits letter password) return true if password valid."
   [[limits letter password]]
   (let [[min-count max-count] limits
         letter-count (count (re-seq (re-pattern letter) password))]
   (<= min-count letter-count max-count)))
 
+(defn valid-part2
+  "Given (positions letter password) return true if password valid."
+  [[positions letter password]]
+  (let [positions (map dec positions)
+        correct? (fn [pos] (= (str (get password pos)) letter))]
+  (= #{true false} (set (map correct? positions)))))
+
+(valid-part2 [[1 3] "a" "vbcde"])
+
 (defn run
   "Calculate number of valid passwords."
-  []
-  (count (filter valid (map parse-line input))))
+  [validator-key]
+  (let [validator (if (= 1 validator-key) valid-part1 valid-part2)]
+  (count (filter validator (map parse-line input)))))
