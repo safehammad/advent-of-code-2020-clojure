@@ -22,5 +22,6 @@
 
 (defn run
   "Run calculation providing number of numbers to add to 2020."
-  [cnt]
-  (answer (first (filter #(= (first %) 2020) (map sum-group (combinations input cnt))))))
+  [part]
+  (let [cnt (if (= :part1 part) 2 3)]
+    (answer (first (filter #(= (first %) 2020) (map sum-group (combinations input cnt)))))))

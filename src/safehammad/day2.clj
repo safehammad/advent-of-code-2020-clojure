@@ -35,6 +35,6 @@
 
 (defn run
   "Calculate number of valid passwords."
-  [validator-key]
-  (let [validator (if (= 1 validator-key) valid-part1 valid-part2)]
+  [part]
+  (let [validator (if (= :part1 part) valid-part1 valid-part2)]
   (count (filter validator (map parse-line input)))))

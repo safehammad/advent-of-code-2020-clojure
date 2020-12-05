@@ -5,12 +5,12 @@
 
 (deftest day1-test
   (testing "Day 1, part 1."
-    (is (= 181044 (day1/run 2))))
+    (is (= 181044 (day1/run :part1))))
   (testing "Day 1, part 2."
-    (is (= 82660352 (day1/run 3)))))
+    (is (= 82660352 (day1/run :part2)))))
 
 (deftest day2-test
   (testing "Day 2, part 1."
-    (is (= 447 (day2/run 1))))
+    (is (= 447 (day2/run :part1))))
   (testing "Day 2, part 2."
-    (is (= 249 (day2/run 2)))))
+    (is (= 249 (day2/run :part2)))))
