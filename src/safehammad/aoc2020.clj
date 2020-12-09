@@ -3,7 +3,8 @@
             [safehammad.day2 :as day2]
             [safehammad.day3 :as day3]
             [safehammad.day4 :as day4]
-            [safehammad.day5 :as day5])
+            [safehammad.day5 :as day5]
+            [safehammad.day6 :as day6])
   (:gen-class))
 
 (defn -main
@@ -17,4 +18,6 @@
   (println "Day 4, part 1: " (day4/run :part1))   ; Number of passports with all required fields
   (println "Day 4, part 2: " (day4/run :part2))   ; Number of valid passports
   (println "Day 5, part 1: " (day5/run :part1))   ; Highest seat id
-  (println "Day 5, part 2: " (day5/run :part2)))  ; Missing seat id
+  (println "Day 5, part 2: " (day5/run :part2))   ; Missing seat id
+  (println "Day 6, part 1: " (day6/run :part1))   ; Questions answered by any
+  (println "Day 6, part 2: " (day6/run :part2)))  ; Questions answered by all
