@@ -67,7 +67,7 @@
   (bag-count (parse-mapping2 input)))
 
 (defn run
-  "Count number of questions"
+  "Count bags."
   [part]
   (cond
     (= :part1 part) (calculate1 input)    ; Number of bags containing shiny gold bag
