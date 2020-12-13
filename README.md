@@ -1,50 +1,29 @@
-# aoc2020
+# Advent of Code 2020 (Clojure)
 
-FIXME: my new application.
+These are my solutions for [Advent of Code 2020](https://adventofcode.com/2020) in [Clojure](https://clojure.org/).
+
+The code is arranged as follows:
+
+- Source files in the `src/safehammad` folder are named name according to day.
+- The `resources` folder contains input data for each day. Some example data extracted from the puzzle text has also been included.
+- The `test` folder contains unit tests which only assert that the final result for parts 1 and 2 are correct.
 
 ## Installation
 
-Download from https://github.com/safehammad/aoc2020
+Download from https://github.com/safehammad/advent-of-code-2020-clojure
 
 ## Usage
 
-FIXME: explanation
+Run the project:
 
-Run the project directly:
+    $ clojure -M:run
 
-    $ clojure -M -m safehammad.aoc2020
-
-Run the project's tests (they'll fail until you edit them):
+Run the project's tests:
 
     $ clojure -M:test:runner
 
-Build an uberjar:
-
-    $ clojure -M:uberjar
-
-Run that uberjar:
-
-    $ java -jar aoc2020.jar
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
 ## License
 
-Copyright © 2020 Safe
+Copyright © 2020 Safe Hammad
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License version 1.0 or (at your option) any later version.
