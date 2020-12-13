@@ -1,8 +1,7 @@
 (ns safehammad.day2
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.math.combinatorics :refer [combinations]])
-  (:gen-class))
+            [clojure.math.combinatorics :refer [combinations]]))
 
 (def input
   "Seq of password entries from input file."

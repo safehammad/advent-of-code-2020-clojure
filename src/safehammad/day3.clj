@@ -1,7 +1,6 @@
 (ns safehammad.day3
   (:require [clojure.java.io :as io]
-            [clojure.string :as str])
-  (:gen-class))
+            [clojure.string :as str]))
 
 (def input
   "Series of entries from input file."
