@@ -14,45 +14,42 @@
 (defn execute
   "Execute program instruction at pointer returning [next pointer, new accumulator]."
   [program pointer acc]
-  (let [[op value] (get program pointer)
+  (let [[op value] (nth program pointer)
         value (Integer/parseInt value)]
     [(if (= op "jmp") (+ pointer value) (inc pointer))
      (if (= op "acc") (+ acc value) acc)]))
 
 (defn run-program
-  "Return the final value of the accumulator."
+  "Run program and return result."
   [program]
-  (loop [pointer 0 visited #{} acc 0]
+  (loop [pointer 0 acc 0 visited #{}]
     (cond
       (visited pointer) {:success false, :acc acc}
       (= pointer (count program)) {:success true, :acc acc}
       :else (let [[next-pointer new-acc] (execute program pointer acc)]
-              (recur next-pointer (conj visited pointer) new-acc)))))
+              (recur next-pointer new-acc (conj visited pointer))))))
 
 (defn op-indices
   "Indices of the given op in the program."
   [program op]
-  (->> program
-       (map-indexed vector)
-       (filter #(= op (get-in % [1 0])))
-       (map first)))
+  (keep-indexed (fn [i [op' _]] (when (= op' op) i)) program))
 
 (defn fixes
   "Provide a series of fixes where from-op is changed to to-op once in each fix."
   [program from-op to-op]
   (map #(assoc-in program [% 0] to-op) (op-indices program from-op)))
 
-(defn fix-program
+(defn run-fixed-program
+  "Run fixed programs until success and return result."
   [program]
   (->> (concat (fixes program "nop" "jmp") (fixes program "jmp" "nop"))
        (map run-program)
-       (filter #(= (:success %) true))
-       first
-       :acc))
+       (filter (partial :success))
+       first))
 
 (defn run
   "Run program (boot code)."
   [part]
   (cond
     (= :part1 part) (:acc (run-program (create-program input)))  ; Final value of accumulator
-    (= :part2 part) (fix-program (create-program input))))       ; Final value of accumulator
+    (= :part2 part) (:acc (run-fixed-program (create-program input)))))       ; Final value of accumulator
