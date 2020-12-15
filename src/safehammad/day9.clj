@@ -5,7 +5,7 @@
 
 (def input
   "Series of entries from input file."
-  (map #(Integer/parseInt %)
+  (map read-string
        (str/split-lines
          (slurp (io/resource "day9-input.txt")))))
 
@@ -23,9 +23,22 @@
        first
        first))
 
+(defn sum-max-min
+  "Sum smallest and largest value in coll."
+  [coll]
+  (+ (apply max coll) (apply min coll)))
+
+(defn find-contiguous
+  "Find contiguous set of n entries which sum to number then sum smallest and largest."
+  [input number]
+  (->> (iterate inc 2)
+       (mapcat #(partition % 1 input))
+       (drop-while #(not= number (apply + %)))
+       first
+       sum-max-min))
+
 (defn run
-  "Find incorrect number."
   [part]
   (cond
-    (= :part1 part) (scan input 25)  ; Final value of accumulator
-    (= :part2 part) (:acc (run-fixed-program (create-program input)))))       ; Final value of accumulator
+    (= :part1 part) (scan input 25)
+    (= :part2 part) (find-contiguous input 144381670)))

@@ -6,7 +6,8 @@
             [safehammad.day5 :as day5]
             [safehammad.day6 :as day6]
             [safehammad.day7 :as day7] 
-            [safehammad.day8 :as day8])
+            [safehammad.day8 :as day8]
+            [safehammad.day9 :as day9])
   (:gen-class))
 
 (defn -main
@@ -26,4 +27,6 @@
   (println "Day 7, part 1: " (day7/run :part1))   ; Containers of shiny gold bags
   (println "Day 7, part 1: " (day7/run :part2))   ; Contents of shiny gold bags
   (println "Day 8, part 1: " (day8/run :part1))   ; Run boot code
-  (println "Day 8, part 2: " (day8/run :part2)))  ; Run boot code
+  (println "Day 8, part 2: " (day8/run :part2))   ; Run boot code
+  (println "Day 9, part 1: " (day9/run :part1))   ; Encryption weakness invalid entry
+  (println "Day 9, part 2: " (day9/run :part2)))  ; Encryption weakness contiguous numbers
