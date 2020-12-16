@@ -39,6 +39,6 @@
 
 (defn run
   [part]
-  (cond
-    (= :part1 part) (scan input 25)
-    (= :part2 part) (find-contiguous input 144381670)))
+  (case part
+    :part1 (scan input 25)
+    :part2 (find-contiguous input 144381670)))

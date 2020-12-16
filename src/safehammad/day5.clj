@@ -45,6 +45,6 @@
 (defn run
   "Count number of trees passed."
   [part]
-  (cond
-    (= :part1 part) (part1 input)
-    (= :part2 part) (part2 input)))
+  (case part
+    :part1 (part1 input)
+    :part2 (part2 input)))

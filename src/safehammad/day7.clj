@@ -68,6 +68,6 @@
 (defn run
   "Count bags."
   [part]
-  (cond
-    (= :part1 part) (calculate1 input)    ; Number of bags containing shiny gold bag
-    (= :part2 part) (calculate2 input)))  ; Number of bags recursively within shiny gold bag
+  (case part
+    :part1 (calculate1 input)    ; Number of bags containing shiny gold bag
+    :part2 (calculate2 input)))  ; Number of bags recursively within shiny gold bag

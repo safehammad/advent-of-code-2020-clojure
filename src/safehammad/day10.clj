@@ -62,6 +62,6 @@
 
 (defn run
   [part]
-  (cond
-    (= :part1 part) (jolt-distribution input)
-    (= :part2 part) (adapter-permutations (joltage-map input) 0)))
+  (case part
+    :part1 (jolt-distribution input)
+    :part2 (adapter-permutations (joltage-map input) 0)))

@@ -50,6 +50,6 @@
 (defn run
   "Run program (boot code)."
   [part]
-  (cond
-    (= :part1 part) (:acc (run-program (create-program input)))  ; Final value of accumulator
-    (= :part2 part) (:acc (run-fixed-program (create-program input)))))       ; Final value of accumulator
+  (case part
+    :part1 (:acc (run-program (create-program input)))  ; Final value of accumulator
+    :part2 (:acc (run-fixed-program (create-program input)))))       ; Final value of accumulator

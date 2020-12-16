@@ -67,6 +67,6 @@
 (defn run
   "Count valid passports."
   [part]
-  (cond
-    (= :part1 part) (count-passports input identity)
-    (= :part2 part) (count-passports input passport-valid?)))
+  (case part
+    :part1 (count-passports input identity)
+    :part2 (count-passports input passport-valid?)))

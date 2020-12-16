@@ -21,6 +21,6 @@
 (defn run
   "Count number of questions"
   [part]
-  (cond
-    (= :part1 part) (question-count input set/union)           ; Questions answered by *any*
-    (= :part2 part) (question-count input set/intersection)))  ; Questions answered by *all*
+  (case part
+    :part1 (question-count input set/union)           ; Questions answered by *any*
+    :part2 (question-count input set/intersection)))  ; Questions answered by *all*
