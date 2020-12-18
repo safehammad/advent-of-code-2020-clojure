@@ -8,7 +8,8 @@
             [safehammad.day7 :as day7] 
             [safehammad.day8 :as day8]
             [safehammad.day9 :as day9]
-            [safehammad.day10 :as day10])
+            [safehammad.day10 :as day10]
+            [safehammad.day11 :as day11])
   (:gen-class))
 
 (defn -main
@@ -32,4 +33,6 @@
   (println "Day 9, part 1: " (day9/run :part1))   ; Encryption weakness invalid entry
   (println "Day 9, part 2: " (day9/run :part2))   ; Encryption weakness contiguous numbers
   (println "Day 10, part 1: " (day10/run :part1))
-  (println "Day 10, part 2: " (day10/run :part2)))
+  (println "Day 10, part 2: " (day10/run :part2))
+  (println "Day 11, part 1: " (day11/run :part1))
+  (println "Day 11, part 2: " (day11/run :part2)))
