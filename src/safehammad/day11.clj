@@ -7,36 +7,63 @@
   (str/split-lines
     (slurp (io/resource "day11-input.txt"))))
 
-;; Part 1
+(def neighbour-directions 
+  (for [row [-1 0 1]
+        col [-1 0 1]
+        :when (not (and (= row col 0)))]
+    [row col]))
+
+(defn visible-directions
+  [[row-direction, col-direction]]
+  (map #(vector (* row-direction %) (* col-direction %)) (iterate inc 1)))
+
+(defn map-coords
+  [[row col] mappings]
+  (map (fn [[row' col']] [(+ row row') (+ col col')]) mappings))
 
 (defn seat-at
-  "Seat at coord [row col]."
+  "Seat at coord [row col]. Return \\X if off edge of layout."
   [layout coord]
-  (get-in layout coord \.))
+  (get-in layout coord \X))
 
-(defn neighbours
-  [[row col]]
-  (for [row' [-1 0 1]
-        col' [-1 0 1]
-        :when (not (and (= row' col' 0)))]
-    [(+ row row') (+ col col')]))
+(defn visible-seat
+  [layout coord direction]
+  (first
+    (drop-while
+      #{\.}
+      (map (partial seat-at layout) (map-coords coord (visible-directions direction))))))
+
+(defn neighbour-seats
+  "Part 1 neighbour algorithm."
+  [layout coord]
+  (map (partial seat-at layout) (map-coords coord neighbour-directions)))
+
+(defn neighbour-seats-visible
+  "Part 2 neighbour algorithm."
+  [layout coord]
+  (map (partial visible-seat layout coord) neighbour-directions))
+
+(def neighbour-thresholds {:part1 4, :part2 5})
+
+(defn neighbour-seat-fn
+  [part]
+  (if (= part :part1) neighbour-seats neighbour-seats-visible))
 
 (defn next-seat
-  [layout coord current-seat]
-  (let [neighbour-seats (map (partial seat-at layout) (neighbours coord))
-        occupied-neighbours (count (filter #{\#} neighbour-seats))]
+  [part layout coord current-seat]
+  (let [occupied-neighbours (count (filter #{\#} ((neighbour-seat-fn part) layout coord)))]
     (case current-seat
       \L (if (= occupied-neighbours 0) \# \L)
-      \# (if (>= occupied-neighbours 4) \L \#)
+      \# (if (>= occupied-neighbours (get neighbour-thresholds part)) \L \#)
       current-seat)))
 
 (defn transform-row
-  [layout row-index row]
-  (vec (map-indexed #(next-seat layout [row-index %1] %2) row)))
+  [part layout row-index row]
+  (vec (map-indexed #(next-seat part layout [row-index %1] %2) row)))
 
 (defn next-layout
-  [layout]
-  (vec (map-indexed (partial transform-row layout) layout)))
+  [part layout]
+  (vec (map-indexed (partial transform-row part layout) layout)))
 
 (defn display
   "Utility to print layout."
@@ -48,9 +75,9 @@
   (count (mapcat (partial filter #{\#}) layout)))
 
 (defn stable-layout
-  [layout]
+  [part layout]
   (->> layout
-       (iterate next-layout)
+       (iterate (partial next-layout part))
        (partition 2 1)
        (drop-while (partial apply not=))
        first
@@ -58,6 +85,4 @@
 
 (defn run
   [part]
-  (case part
-    :part1 (count-occupied (stable-layout input))
-    :part2 (count-occupied (stable-layout input))))
+  (count-occupied (stable-layout part input)))

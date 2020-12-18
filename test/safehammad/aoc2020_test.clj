@@ -76,4 +76,4 @@
   (testing "Day 11, part 1."
     (is (= 2324 (day11/run :part1))))
   (testing "Day 10, part 2."
-    (is (= nil (day11/run :part2)))))
+    (is (= 2068 (day11/run :part2)))))
