@@ -1,3 +1,5 @@
+;; Part 1 is a bit messy!
+;; Part 2 is much more like idiomatic Clojure ;)
 (ns safehammad.day12
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
@@ -8,30 +10,34 @@
     (slurp (io/resource "day12-input.txt"))))
 
 ;; Example input
-; (def input ["F10" "N3" "F7" "R90" "F11"])
+;(def input ["F10" "N3" "F7" "R90" "F11"])
 
 (def compass {"N" 0
               "E" 90
               "S" 180
-              "W" 270})
+              "W" 270
+              0   "N"
+              90  "E"
+              180 "S"
+              270 "W"})
 
-(defn rotate
-  "Return new angle."
-  [action amount angle]
-  (mod (+ angle (* amount (case action "L" -1 "R" 1))) 360))
+(defn rotate-direction
+  "Return new direction."
+  [action angle direction]
+  (compass (mod (+ (compass direction) (* angle (case action "L" -1 "R" 1))) 360)))
 
 (defn convert-instruction
-  [[action amount] current-angle]
+  [[action amount] current-direction]
   (cond
-    (= "F" action) [current-angle amount]
+    (= "F" action) [current-direction amount]
     (#{"R" "L"} action) nil
-    :else [(compass action) amount]))
+    :else [action amount]))
 
-(defn new-angle
-  [[action amount] current-angle]
+(defn new-direction
+  [[action amount] current-direction]
   (if (#{"R" "L"} action)
-    (rotate action amount current-angle)
-    current-angle))
+    (rotate-direction action amount current-direction)
+    current-direction))
 
 (defn input->instructions
   "Parse to series of [action amount]."
@@ -39,40 +45,70 @@
   (map #(vector (subs % 0 1) (Integer/parseInt (subs % 1))) input))
 
 (defn translate-instructions
-  "Translate and normalise instructions to [angle amount]."
+  "Translate and normalise instructions to [direction amount]."
   [instructions]
   (-> (reduce
-        (fn [{:keys [angle acc]} instruction]
-          (let [instruction' (convert-instruction instruction angle)
-                angle' (new-angle instruction angle)
+        (fn [{:keys [direction acc]} instruction]
+          (let [instruction' (convert-instruction instruction direction)
+                direction' (new-direction instruction direction)
                 acc' (if instruction' (conj acc instruction') acc)]
-            {:angle angle' :acc acc'}))
-        {:angle (compass "E") :acc []}
+            {:direction direction' :acc acc'}))
+        {:direction "E" :acc []}
         instructions)
       :acc))
 
-(defn move-ship
-  [[x y] [angle amount]]
-  (case angle
-    0   [x (- y amount)]
-    90  [(+ x amount) y]
-    180 [x (+ y amount)]
-    270 [(- x amount) y]))
+(defn translate
+  [[x y] [direction amount]]
+  (case direction
+    "N" [x (+ y amount)]
+    "E" [(+ x amount) y]
+    "S" [x (- y amount)]
+    "W" [(- x amount) y]))
+
+(defn rotate-point
+  "Rotate point around origin."
+  [[x y] [direction angle]]
+  (let [angle (if (= direction "L") (- 360 angle) angle)]
+    (case angle
+      90  [y (- x)]
+      180 [(- x) (- y)]
+      270 [(- y) x])))
+
+(defn move-point
+  "Move point by a vector, optionally n times."
+  ([[dx dy] [x y]] [(+ x dx) (+ y dy)])
+  ([times diff point] (first (drop times (iterate (partial move-point diff) point)))))
+
+(defn move-all
+  [{:keys [ship waypoint]} [action amount]]
+  (cond
+    (#{"N" "E" "W" "S"} action) {:ship ship :waypoint (translate waypoint [action amount])}
+    (#{"L" "R"} action) {:ship ship :waypoint (rotate-point waypoint [action amount])}
+    (#{"F"} action) {:ship (move-point amount waypoint ship) :waypoint waypoint}
+    :else {:ship ship :waypoint waypoint}))
 
 (defn manhatten
-  [[x y]]
-  (+ x y))
+  [pos]
+  (apply + (map #(Math/abs %) pos)))
 
-(defn run-input
+(defn run-input-part1
   [input]
   (->> input
        input->instructions
        translate-instructions
-       (reduce move-ship [0 0])
+       (reduce translate [0 0])
+       manhatten))
+
+(defn run-input-part2
+  [input]
+  (->> input
+       input->instructions
+       (reduce move-all {:ship [0 0] :waypoint [10 1]})
+       :ship
        manhatten))
 
 (defn run
   [part]
   (case part
-    :part1 (run-input input)
-    :part2 (run-input input)))
+    :part1 (run-input-part1 input)
+    :part2 (run-input-part2 input)))

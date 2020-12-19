@@ -83,4 +83,4 @@
   (testing "Day 12, part 1."
     (is (= 938 (day12/run :part1))))
   (testing "Day 12, part 2."
-    (is (= 938 (day12/run :part2)))))
+    (is (= 54404 (day12/run :part2)))))
