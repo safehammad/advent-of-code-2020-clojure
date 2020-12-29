@@ -13,7 +13,8 @@
             [safehammad.day12 :as day12]
             [safehammad.day13 :as day13]
             [safehammad.day14 :as day14]
-            [safehammad.day15 :as day15])
+            [safehammad.day15 :as day15]
+            [safehammad.day16 :as day16])
   (:gen-class))
 
 (defn -main
@@ -47,4 +48,6 @@
   (println "Day 14, part 1: " (day14/run :part1))
   (println "Day 14, part 2: " (day14/run :part2))
   (println "Day 15, part 1: " (day15/run :part1))
-  (println "Day 15, part 2: " (day15/run :part2)))
+  (println "Day 15, part 2: " (day15/run :part2))
+  (println "Day 16, part 1: " (day16/run :part1))
+  (println "Day 16, part 2: " (day16/run :part2)))
