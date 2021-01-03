@@ -10,7 +10,7 @@
 (def neighbour-directions 
   (for [row [-1 0 1]
         col [-1 0 1]
-        :when (not (and (= row col 0)))]
+        :when (not (= row col 0))]
     [row col]))
 
 (defn visible-directions
