@@ -11,41 +11,38 @@
 (defn search-limits
   "The range to be searched for changes in the next step"
   [cubes]
-  (letfn [(ranges [f] (map f (keys cubes)))]
-    (map
-      (partial apply range)
-      (map (juxt
-             (comp dec (partial apply min))
-             (comp inc inc (partial apply max)))
-           (map ranges [first second last])))))
+  (map
+    (partial apply range)
+    (map (juxt
+           (comp dec (partial apply min))
+           (comp inc inc (partial apply max)))
+         (apply map vector (keys cubes)))))
 
 (defn search-coords
+  "All coordinates to be calculated in the next step."
   [cubes]
   (apply combo/cartesian-product (search-limits cubes)))
 
-(def neighbour-offsets 
-  (for [x [-1 0 1]
-        y [-1 0 1]
-        z [-1 0 1]
-        :when (not (= x y z 0))]
-    [x y z]))
+(defn neighbour-offsets [dimensions]
+  (->> (repeat dimensions [-1 0 1])
+       (apply combo/cartesian-product)
+       (remove #{(repeat dimensions 0)})))
 
-(defn cube-at
-  [cubes coords]
+(defn cube-at [cubes coords]
   (get cubes coords \.))
 
 (defn neighbour-coords
-  "Return the coords of the 26 neighbouring cubes."
+  "Return the coords of the neighbouring cubes."
   [coords]
-  (map (partial mapv + coords) neighbour-offsets))
+  (let [dimensions (count coords)]
+    (map (partial mapv + coords) (neighbour-offsets dimensions))))
 
 (defn neighbour-cubes
-  "Return the 26 neighbouring cubes."
+  "Return the neighbouring cubes."
   [cubes coords]
   (map (partial cube-at cubes) (neighbour-coords coords)))
 
-(defn count-cubes
-  [cube-list]
+(defn count-cubes [cube-list]
   (count (filter #{\#} cube-list)))
 
 (defn run-rules
@@ -58,25 +55,25 @@
     \.))
 
 (defn step
+  "Next generation of cubes."
   [cubes]
   (->> (search-coords cubes)
        (map #(vector % (run-rules cubes %)))
        (into {})))
 
 (defn conway
-  [input]
-  (into
-    {}
-    (let [z 0]
-      (for [[x line] (map-indexed vector input)
-            [y cube] (map-indexed vector line)]
-        {[x y z] cube}))))
+  [input dimensions]
+  "Build map of coords ([x y ...]) to active (\\#) or inactive (\\.) cubes."
+  (into {} (let [zeros (repeat (- dimensions 2) 0)]
+             (for [[x line] (map-indexed vector input)
+                   [y cube] (map-indexed vector line)]
+               {(into [x y] zeros) cube}))))
 
 (defn calculate
-  [input]
-  (count-cubes (vals (first (drop 6 (iterate step (conway input)))))))
+  [input dimensions]
+  (count-cubes (vals (first (drop 6 (iterate step (conway input dimensions)))))))
 
 (defn run [part]
   (case part
-    :part1 (calculate input)
-    :part2 (calculate-part2 input)))
+    :part1 (calculate input 3)
+    :part2 (calculate input 4)))

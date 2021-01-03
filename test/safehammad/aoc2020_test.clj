@@ -15,7 +15,8 @@
             [safehammad.day13 :as day13]
             [safehammad.day14 :as day14]
             [safehammad.day15 :as day15]
-            [safehammad.day16 :as day16]))
+            [safehammad.day16 :as day16]
+            [safehammad.day17 :as day17]))
 
 (deftest day1-test
   (testing "Day 1, part 1."
@@ -112,3 +113,9 @@
     (is (= 20091 (day16/run :part1))))
   (testing "Day 16, part 2."
     (is (= 2325343130651 (day16/run :part2)))))
+
+(deftest day17-test
+  (testing "Day 17, part 1."
+    (is (= 313 (day17/run :part1))))
+  (testing "Day 17, part 2."
+    (is (= 2640 (day17/run :part2)))))
