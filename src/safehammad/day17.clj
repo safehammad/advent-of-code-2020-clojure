@@ -69,8 +69,7 @@
                    [y cube] (map-indexed vector line)]
                {(into [x y] zeros) cube}))))
 
-(defn calculate
-  [input dimensions]
+(defn calculate [input dimensions]
   (count-cubes (vals (first (drop 6 (iterate step (conway input dimensions)))))))
 
 (defn run [part]
