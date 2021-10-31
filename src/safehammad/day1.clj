@@ -8,7 +8,7 @@
   (map #(Integer/parseInt %)
      (str/split-lines
        (slurp (io/resource "day1-input.txt")))))
- 
+
 (defn sum-group
   "Prefix group with sum of group. For example (1 2) -> (3 1 2)."
   [group]
