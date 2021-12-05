@@ -14,11 +14,6 @@
    [5 1]
    [7 1]
    [1 2]])
- 
-(defn number-lines
-  "Return lines as [line-no line]."
-  [lines]
-  (map vector (iterate inc 0) lines))
 
 (defn char-at-line
   "Return character in line based on line number."
@@ -31,7 +26,7 @@
   (->> input
        (partition down down nil)  ; pad to ensure last "odd" line is included
        (map first)
-       (number-lines)
+       (map-indexed vector)
        (map (partial char-at-line right))
        (filter #{\#})
        count))
