@@ -8,6 +8,8 @@
 /.prepl-port
 /.cpcache/
 /.rebel_readline_history
+/.lsp
+/.clj-kondo
 .hgignore
 .hg/
 *.swp
