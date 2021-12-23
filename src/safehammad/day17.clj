@@ -62,8 +62,8 @@
        (into {})))
 
 (defn conway
-  [input dimensions]
   "Build map of coords ([x y ...]) to active (\\#) or inactive (\\.) cubes."
+  [input dimensions]
   (into {} (let [zeros (repeat (- dimensions 2) 0)]
              (for [[x line] (map-indexed vector input)
                    [y cube] (map-indexed vector line)]
